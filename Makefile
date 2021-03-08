@@ -1,2 +1,2 @@
 default:
-	gcc -o curdit src/*.c 
+	gcc -o curdit src/*.c -lncurses 
