@@ -3,13 +3,28 @@
  * @brief Main execution point of the program
  * */
 #include "main.h"
+#include "file_operations.h"
 
 static WINDOW *status_window;
 static WINDOW *file_window;
+static char **file_data;
 
-int main() {
-  // Initialisation functions
+int main(int argc, char **argv) {
   atexit(clean_up);
+
+  if (argc < 2 || argc > 2) {
+    printf("Error: Incorrect usage\n");
+    printf("Usage: ./curdit [file]\n");
+    printf("Where [file] can be a relative or absolute path to the file\n");
+    exit(EXIT_FAILURE);
+  }
+
+  // load in file
+  int lines = count_lines(open_file(argv[1]));
+  file_data = read_in_file(open_file(argv[1]), lines);
+  // print_data(file_data, lines);
+
+  // Initialisation functions
   initscr();
   raw();
   noecho();
