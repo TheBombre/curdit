@@ -2,7 +2,7 @@
  * @file
  * @brief Functions relating to files
  * */
-#include "file_operations.h"
+#include "../include/file_operations.h"
 
 /**
  * Reads in the data from a specified file stream

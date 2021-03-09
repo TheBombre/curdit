@@ -2,11 +2,13 @@
  * @file
  * @brief Main execution point of the program
  * */
-#include "main.h"
-#include "file_operations.h"
+#include "../include/main.h"
+#include "../include/editor.h"
+#include "../include/file_operations.h"
 
 static WINDOW *status_window;
 static WINDOW *file_window;
+static WINDOW *text_area;
 static char **file_data;
 
 int main(int argc, char **argv) {
@@ -38,6 +40,7 @@ int main(int argc, char **argv) {
   int file_window_rows = 0.92 * rows;
   status_window = newwin(rows - file_window_rows, columns, file_window_rows, 0);
   file_window = newwin(file_window_rows, columns, 0, 0);
+  text_area = newwin(file_window_rows - 2, columns - 2, 1, 1);
 
   // Setup borders around windows
   wborder(status_window, 0, 0, 0, 0, 0, 0, 0, 0);
@@ -47,9 +50,12 @@ int main(int argc, char **argv) {
   mvwprintw(status_window, 0, columns / 2 - 5, " Status ");
   mvwprintw(file_window, 0, columns / 2 - 5, " main.c ");
 
+  display_text(text_area, file_data, lines);
+
   // Update windows
   wrefresh(status_window);
   wrefresh(file_window);
+  wrefresh(text_area);
 
   getch();
   clean_up();
@@ -59,7 +65,7 @@ int main(int argc, char **argv) {
 /**
  * Deletes all the windows before exiting
  * */
-void clean_up() {
+void clean_up(void) {
   delwin(status_window);
   delwin(file_window);
   endwin();
