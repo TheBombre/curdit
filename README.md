@@ -12,7 +12,14 @@ To build the program:
 make 
 ```
 
+To run:
+```shell
+./curdit 
+```
+
 To build the documentation:
 ```shell
 make docs 
 ```
+
+## Keyboard mapping
