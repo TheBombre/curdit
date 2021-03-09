@@ -14,8 +14,9 @@ make
 
 To run:
 ```shell
-./curdit 
+./curdit [file] 
 ```
+Where [file] is the relative or absolute path to the file.
 
 To build the documentation:
 ```shell
