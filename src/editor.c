@@ -22,7 +22,10 @@ void display_text(WINDOW *text_area, char **file_data, int lines) {
  * @param mode from the MODES enum
  * */
 void handle_keypress(WINDOW *text_area, char character, enum Mode mode) {
-  if (mode == NORMAL) {
+  if (character == CONTROL_KEY('q')) {
+    // TODO: complete with the handle_user_exit here
+    exit(EXIT_SUCCESS);
+  } else if (mode == NORMAL) {
     // Get current cursor position
     int row, column;
     getyx(text_area, row, column);
@@ -60,6 +63,9 @@ void handle_keypress(WINDOW *text_area, char character, enum Mode mode) {
       break;
     }
     wrefresh(text_area);
+  } else if (mode == INSERT) {
+    if (CONTROL_KEY('n') == character) {
+      change_mode_to(NORMAL);
+    }
   }
 }
-void dispay_keyboard_shortcuts(WINDOW *status_window) {}

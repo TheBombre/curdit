@@ -50,6 +50,7 @@ int main(int argc, char **argv) {
   mvwprintw(file_window, 0, columns / 2 - 5, " main.c ");
 
   display_text(text_area, file_data, lines);
+  populate_status_window();
 
   // Update windows
   wrefresh(status_window);
@@ -59,7 +60,7 @@ int main(int argc, char **argv) {
   while (true) {
     char character = getch();
 
-    parse_keypress(character);
+    handle_keypress(text_area, character, current_mode);
   }
   getch();
   clean_up();
@@ -76,26 +77,36 @@ void clean_up(void) {
 }
 
 /**
- * Listens to keyboard presses
- * @param character the key pressed
- * */
-void parse_keypress(char character) {
-  // TODO: change back to INSERT_MODE
-  if (current_mode == NORMAL && character == CONTROL_KEY('q')) {
-    wmove(status_window, 2, 4);
-    wprintw(status_window, "Pressed control j");
-    wrefresh(status_window);
-    // TODO: complete with the handle_user_exit here
-    exit(EXIT_SUCCESS);
-  } else
-    handle_keypress(text_area, character, current_mode);
-}
-
-/**
  * Changing the current mode to specified
  * @param mode the Mode enum to change to
  * */
 void change_mode_to(enum Mode mode) {
   current_mode = mode;
   // TODO: update the status window to show this change
+  char *mode_text = mode_to_text(current_mode);
+  mvwprintw(status_window, 1, 1, "Mode: %s", mode_text);
+  wrefresh(status_window);
+}
+
+/**
+ * Returns the text version of the mode
+ * @param mode the Mode to change to text
+ * @return text version of the mode
+ * */
+char *mode_to_text(enum Mode mode) {
+  char *mode_text = malloc(sizeof(char *));
+  if (mode == NORMAL)
+    mode_text = "Normal";
+  else
+    mode_text = "Insert";
+
+  return mode_text;
+}
+
+/**
+ * Fills the status_window with text
+ * */
+void populate_status_window(void) {
+  char *mode_text = mode_to_text(current_mode);
+  mvwprintw(status_window, 1, 1, "Mode: %s", mode_text);
 }

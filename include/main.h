@@ -7,5 +7,6 @@
 
 // function prototypes
 void clean_up(void);
-void parse_keypress(char character);
 void change_mode_to(enum Mode mode);
+void populate_status_window(void);
+char *mode_to_text(enum Mode mode);
