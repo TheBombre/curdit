@@ -3,13 +3,12 @@
  * @brief Main execution point of the program
  * */
 #include "../include/main.h"
-#include "../include/editor.h"
-#include "../include/file_operations.h"
 
 static WINDOW *status_window;
 static WINDOW *file_window;
 static WINDOW *text_area;
 static char **file_data;
+static enum Mode current_mode = NORMAL;
 
 int main(int argc, char **argv) {
   atexit(clean_up);
@@ -57,6 +56,11 @@ int main(int argc, char **argv) {
   wrefresh(file_window);
   wrefresh(text_area);
 
+  while (true) {
+    char character = getch();
+
+    parse_keypress(character);
+  }
   getch();
   clean_up();
   return EXIT_SUCCESS;
@@ -69,4 +73,29 @@ void clean_up(void) {
   delwin(status_window);
   delwin(file_window);
   endwin();
+}
+
+/**
+ * Listens to keyboard presses
+ * @param character the key pressed
+ * */
+void parse_keypress(char character) {
+  // TODO: change back to INSERT_MODE
+  if (current_mode == NORMAL && character == CONTROL_KEY('q')) {
+    wmove(status_window, 2, 4);
+    wprintw(status_window, "Pressed control j");
+    wrefresh(status_window);
+    // TODO: complete with the handle_user_exit here
+    exit(EXIT_SUCCESS);
+  } else
+    handle_keypress(text_area, character, current_mode);
+}
+
+/**
+ * Changing the current mode to specified
+ * @param mode the Mode enum to change to
+ * */
+void change_mode_to(enum Mode mode) {
+  current_mode = mode;
+  // TODO: update the status window to show this change
 }

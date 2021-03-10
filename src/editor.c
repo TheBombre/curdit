@@ -1,4 +1,8 @@
-#include "../include/editor.h"
+/**
+ * @file
+ * @brief Functions that manipulate the text area
+ * */
+#include "../include/main.h"
 
 /**
  * Rendering text for the user to see
@@ -11,3 +15,51 @@ void display_text(WINDOW *text_area, char **file_data, int lines) {
     wprintw(text_area, file_data[i]);
   }
 }
+
+/**
+ * Receives keypress and decides actions to perform
+ * @param character the key pressed by the user
+ * @param mode from the MODES enum
+ * */
+void handle_keypress(WINDOW *text_area, char character, enum Mode mode) {
+  if (mode == NORMAL) {
+    // Get current cursor position
+    int row, column;
+    getyx(text_area, row, column);
+
+    switch (character) {
+    case 'h':
+      wmove(text_area, row, column - 1);
+      break;
+    case 'j':
+      wmove(text_area, row + 1, column);
+      break;
+    case 'k':
+      wmove(text_area, row - 1, column);
+      break;
+    case 'l':
+      wmove(text_area, row, column + 1);
+      break;
+    case 's':
+      // TODO:implement save functionality
+      break;
+    case 'o':
+      // TODO: implement opening files while editing another
+      break;
+    case 'i':
+      change_mode_to(INSERT);
+      break;
+    case 'r':
+      // TODO: ability to redo change
+      break;
+    case 'u':
+      // TODO: ability to undo change
+      break;
+    default:
+      // TODO: maybe saving as a change?
+      break;
+    }
+    wrefresh(text_area);
+  }
+}
+void dispay_keyboard_shortcuts(WINDOW *status_window) {}
